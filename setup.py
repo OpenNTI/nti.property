@@ -49,7 +49,10 @@ setup(
     install_requires=[
         'setuptools',
         'zope.annotation',
-        'zope.cachedescriptors'
+        'zope.cachedescriptors',
+        'zope.contenttype',
+        'zope.file',
+        'zope.schema'
     ],
     extras_require={
         'test': TESTS_REQUIRE,

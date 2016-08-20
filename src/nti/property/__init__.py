@@ -15,6 +15,10 @@ from nti.property.property import read_alias
 from nti.property.property import dict_alias
 from nti.property.property import dict_read_alias
 
+from nti.property.property import annotation_alias
+
 from nti.property.property import Lazy
 from nti.property.property import LazyOnClass
 from nti.property.property import CachedProperty
+
+from nti.property.urlproperty import UrlProperty
