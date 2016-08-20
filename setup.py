@@ -48,6 +48,7 @@ setup(
     tests_require=TESTS_REQUIRE,
     install_requires=[
         'setuptools',
+        'zope.annotation',
         'zope.cachedescriptors'
     ],
     extras_require={
