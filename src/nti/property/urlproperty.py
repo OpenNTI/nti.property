@@ -43,7 +43,7 @@ class UrlProperty(object):
 	A data descriptor like :func:`property` for storing a URL value efficiently.
 
 	This is an interesting situation because of ``data:`` URLs, which
-	can be quite large.	(See :mod:`nti.utils.dataurl`) To store them efficiently,
+	can be quite large.	(See :mod:`nti.property.dataurl`) To store them efficiently,
 	we transform them into a Blob-based :class:`zope.file.interfaces.IFile`. This means
 	that we need up to two dictionary entries/attributes on the instance (one to store
 	a URL string, one to store a IFile), although they can be the same; we will take
