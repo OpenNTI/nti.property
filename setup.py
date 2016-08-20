@@ -24,7 +24,7 @@ setup(
     version=_read('version.txt').strip(),
     author='Jason Madden',
     author_email='jason@nextthought.com',
-    description="NTI Site",
+    description="NTI Property",
     long_description=_read('README.rst'),
     license='Apache',
     keywords='Property',
