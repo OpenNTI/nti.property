@@ -15,39 +15,39 @@ from nose.tools import assert_raises
 
 import unittest
 
-import zope.schema.interfaces
+from zope.schema.interfaces import InvalidURI
 
 from nti.property.urlproperty import UrlProperty
 
 class TestURLProperty(unittest.TestCase):
-	
+
 	def test_getitem(self):
 		prop = UrlProperty()
 		getter = prop.make_getitem()
-	
-		with assert_raises( KeyError ):
-			getter( object(), 'foobar' )
-		assert_that( getter( object(), prop.data_name ), is_( none() ) )
-	
+
+		with assert_raises(KeyError):
+			getter(object(), 'foobar')
+		assert_that(getter(object(), prop.data_name), is_(none()))
+
 	def test_delete(self):
 		prop = UrlProperty()
-		assert_that( prop.__delete__( None ), is_( none() ) )
-	
+		assert_that(prop.__delete__(None), is_(none()))
+
 		class O(object):
 			pass
-	
+
 		o = O()
-		setattr( o, prop.url_attr_name, 1 )
-		setattr( o, prop.file_attr_name, 2 )
-	
-		prop.__delete__( o )
-		assert_that( o.__dict__, is_( {} ) )
-	
+		setattr(o, prop.url_attr_name, 1)
+		setattr(o, prop.file_attr_name, 2)
+
+		prop.__delete__(o)
+		assert_that(o.__dict__, is_({}))
+
 	def test_reject_url_with_missing_host(self):
 		prop = UrlProperty()
 		prop.reject_url_with_missing_host = True
-	
+
 		class O(object):
 			pass
-		with assert_raises(zope.schema.interfaces.InvalidURI):
-			prop.__set__( O(), '/path/to/thing' )
+		with assert_raises(InvalidURI):
+			prop.__set__(O(), '/path/to/thing')
