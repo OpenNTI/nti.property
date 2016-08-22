@@ -9,6 +9,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+from nti.property.property import readproperty
+
 from nti.property.property import alias
 from nti.property.property import read_alias
 
