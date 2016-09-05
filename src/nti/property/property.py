@@ -74,57 +74,10 @@ from functools import update_wrapper
 from zope.cachedescriptors.property import readproperty
 readproperty = readproperty  # export
 
-from zope.cachedescriptors.property import Lazy as _Lazy
-from zope.cachedescriptors.property import CachedProperty as _CachedProperty
-
-class Lazy(_Lazy):
-	"""
-	Just like :class:`zope.cachedescriptors.property.Lazy`, except
-	properly preserves documentation and other attributes.
-	"""
-	pass
-
-# Actually, we do this by default, but encourage
-# the proper importing
-_Lazy_init__ = _Lazy.__init__
-def _patch_Lazy_init(self, func, *args, **kwargs):
-	_Lazy_init__(self, func, *args, **kwargs)
-	update_wrapper(self, func)
-_Lazy.__init__ = _patch_Lazy_init
-
-def CachedProperty(*args):
-	"""
-	Just like :class:`zope.cachedescriptors.property.CachedProperty`, except
-	usable directly as an annotation when given names. Any of these patterns
-	will work:
-
-	* ``@CachedProperty``
-	* ``@CachedProperty()``
-	* ``@CachedProperty('n','n2')``
-
-	"""
-
-	if not args:  # @CachedProperty()
-		return _CachedProperty  # A callable that produces the decorated function
-
-	arg1 = args[0]
-	names = args[1:]
-	if callable(arg1):  # @CachedProperty
-		return _CachedProperty(arg1)
-
-	# @CachedProperty( 'n' )
-	# Ok, must be a list of string names. Which means we are used like a factory
-	# so we return a callable object to produce the actual decorated function
-	def factory(function):
-		return _CachedProperty(function, arg1, *names)
-	return factory
-
-# Like the above, preserve docs
-_CachedProperty_init__ = _CachedProperty.__init__
-def _patch_CachedProperty_init(self, func, *names):
-	_CachedProperty_init__(self, func, *names)
-	update_wrapper(self, func)
-_CachedProperty.__init__ = _patch_CachedProperty_init
+from zope.cachedescriptors.property import Lazy # BMC
+Lazy = Lazy # BWC export
+from zope.cachedescriptors.property import CachedProperty
+CachedProperty = CachedProperty # BWC export
 
 class LazyOnClass(object):
 	"""
