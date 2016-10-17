@@ -69,13 +69,12 @@ def dict_read_alias(key_name, doc=None):
 	return property(lambda self: self.__dict__[key_name],
 					doc=doc)
 
-from functools import update_wrapper
-
 from zope.cachedescriptors.property import readproperty
-readproperty = readproperty  # export
+readproperty = readproperty  # BWC export
 
-from zope.cachedescriptors.property import Lazy # BMC
+from zope.cachedescriptors.property import Lazy
 Lazy = Lazy # BWC export
+
 from zope.cachedescriptors.property import CachedProperty
 CachedProperty = CachedProperty # BWC export
 
