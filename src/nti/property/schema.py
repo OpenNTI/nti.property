@@ -15,6 +15,7 @@ from zope.schema.interfaces import InvalidURI
 
 from nti.property import dataurl
 
+
 class DataURI(schema.URI):
     """
     A URI field that ensures and requires its value to be

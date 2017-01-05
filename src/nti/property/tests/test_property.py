@@ -23,80 +23,83 @@ from nti.property.property import dict_alias
 from nti.property.property import CachedProperty
 from nti.property.property import annotation_alias
 
+
 class TestProperty(unittest.TestCase):
 
-	def test_dict_alias(self):
-		class X(object):
-			def __init__(self):
-				self.x = 1
+    def test_dict_alias(self):
+        class X(object):
 
-			y = dict_alias('x')
+            def __init__(self):
+                self.x = 1
 
-		assert_that(X(), has_property('y', 1))
-		x = X()
-		x.y = 2
-		assert_that(x, has_property('y', 2))
-		assert_that(x, has_property('x', 2))
+            y = dict_alias('x')
 
-	def test_cached_property(self):
+        assert_that(X(), has_property('y', 1))
+        x = X()
+        x.y = 2
+        assert_that(x, has_property('y', 2))
+        assert_that(x, has_property('x', 2))
 
-		# Usable directly
+    def test_cached_property(self):
 
-		class X(object):
+        # Usable directly
 
-			@CachedProperty
-			def prop(self):
-				return object()
+        class X(object):
 
-		x = X()
-		assert_that(x.prop, same_instance(x.prop))
+            @CachedProperty
+            def prop(self):
+                return object()
 
-		# Usable with names
+        x = X()
+        assert_that(x.prop, same_instance(x.prop))
 
-		class Y(object):
+        # Usable with names
 
-			def __init__(self):
-				self.dep = 1
+        class Y(object):
 
-			@CachedProperty('dep')
-			def prop(self):
-				return str(self.dep)
+            def __init__(self):
+                self.dep = 1
 
-		y = Y()
-		assert_that(y.prop, same_instance(y.prop))
-		assert_that(y.prop, is_("1"))
-		y.dep = 2
-		assert_that(y.prop, is_("2"))
-		assert_that(y.prop, same_instance(y.prop))
+            @CachedProperty('dep')
+            def prop(self):
+                return str(self.dep)
 
-		# And, to help refactoring, usable with parens but no names
-		class Z(object):
-			@CachedProperty()
-			def prop(self):
-				return object()
+        y = Y()
+        assert_that(y.prop, same_instance(y.prop))
+        assert_that(y.prop, is_("1"))
+        y.dep = 2
+        assert_that(y.prop, is_("2"))
+        assert_that(y.prop, same_instance(y.prop))
 
-		z = Z()
-		assert_that(z.prop, same_instance(z.prop))
+        # And, to help refactoring, usable with parens but no names
+        class Z(object):
 
-	def test_annotation_alias(self):
+            @CachedProperty()
+            def prop(self):
+                return object()
 
-		@interface.implementer(an_interfaces.IAnnotations)
-		class X(dict):
-			the_alias = annotation_alias('the.key', delete=True, default=1)
+        z = Z()
+        assert_that(z.prop, same_instance(z.prop))
 
-		x = X()
-		# Default value
-		assert_that(x, has_property('the_alias', 1))
+    def test_annotation_alias(self):
 
-		# Set
-		x.the_alias = 2
-		assert_that(x, has_property('the_alias', 2))
-		assert_that(x, has_entry('the.key', 2))
+        @interface.implementer(an_interfaces.IAnnotations)
+        class X(dict):
+            the_alias = annotation_alias('the.key', delete=True, default=1)
 
-		# del
-		del x.the_alias
-		assert_that(x, has_property('the_alias', 1))
+        x = X()
+        # Default value
+        assert_that(x, has_property('the_alias', 1))
 
-		# quiet re-del
-		del x.the_alias
-		assert_that(x, has_property('the_alias', 1))
+        # Set
+        x.the_alias = 2
+        assert_that(x, has_property('the_alias', 2))
+        assert_that(x, has_entry('the.key', 2))
+
+        # del
+        del x.the_alias
+        assert_that(x, has_property('the_alias', 1))
+
+        # quiet re-del
+        del x.the_alias
+        assert_that(x, has_property('the_alias', 1))

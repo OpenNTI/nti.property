@@ -15,6 +15,7 @@ from nti.testing.layers import ConfiguringLayerMixin
 
 import zope.testing.cleanup
 
+
 class PropertyTestLayer(ZopeComponentLayer, GCLayerMixin, ConfiguringLayerMixin):
 
     set_up_packages = ('nti.property',)
@@ -35,6 +36,7 @@ class PropertyTestLayer(ZopeComponentLayer, GCLayerMixin, ConfiguringLayerMixin)
     @classmethod
     def testTearDown(cls):
         pass
+
 
 class PropertyLayerTest(unittest.TestCase):
     layer = PropertyTestLayer

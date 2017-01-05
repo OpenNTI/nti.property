@@ -16,10 +16,11 @@ from nti.property.schema import DataURI
 
 GIF_DATAURL = b'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
 
+
 class TestSchema(unittest.TestCase):
 
-	def test_data_url_class(self):
-		value = DataURI.is_valid_data_uri(GIF_DATAURL)
-		assert_that(value, is_(True))
-		data_url = DataURI(__name__='url').fromUnicode(GIF_DATAURL)
-		assert_that(data_url, is_(GIF_DATAURL))
+    def test_data_url_class(self):
+        value = DataURI.is_valid_data_uri(GIF_DATAURL)
+        assert_that(value, is_(True))
+        data_url = DataURI(__name__='url').fromUnicode(GIF_DATAURL)
+        assert_that(data_url, is_(GIF_DATAURL))
