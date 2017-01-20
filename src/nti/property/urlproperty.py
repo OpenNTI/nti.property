@@ -143,8 +143,8 @@ class UrlProperty(object):
             if self.max_file_size and len(raw_bytes) > self.max_file_size:
                 raise ConstraintNotSatisfied("The uploaded file is too large.")
             major, minor, parms = ct_parse(mime_type)
-            the_file = zfile.File(
-                mimeType=major + '/' + minor, parameters=parms)
+            the_file = zfile.File(mimeType=major + '/' + minor, 
+                                  parameters=parms)
             fp = the_file.open('w')
             fp.write(raw_bytes)
             fp.close()

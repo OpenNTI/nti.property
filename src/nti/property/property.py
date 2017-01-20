@@ -138,8 +138,9 @@ def annotation_alias(annotation_name, annotation_property=None, default=None,
         factory = lambda self: IAnnotations(getattr(self, annotation_property))
 
     fget = lambda self: factory(self).get(annotation_name, default)
-    fset = lambda self, nv: operator.setitem(
-        factory(self), annotation_name, nv)
+    fset = lambda self, nv: operator.setitem(factory(self), 
+                                             annotation_name, 
+                                             nv)
     fdel = None
     if delete:
         def fdel(self):

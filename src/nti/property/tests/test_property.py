@@ -43,7 +43,6 @@ class TestProperty(unittest.TestCase):
     def test_cached_property(self):
 
         # Usable directly
-
         class X(object):
 
             @CachedProperty
@@ -54,7 +53,6 @@ class TestProperty(unittest.TestCase):
         assert_that(x.prop, same_instance(x.prop))
 
         # Usable with names
-
         class Y(object):
 
             def __init__(self):
