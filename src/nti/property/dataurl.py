@@ -3,7 +3,7 @@
 """
 Objects for working with the RFC2397 ``data`` URL scheme::
 
-	data:[<MIME-type>][;charset=<encoding>][;base64],<data>
+    data:[<MIME-type>][;charset=<encoding>][;base64],<data>
 
 The encoding is indicated by ``;base64``. If it's present the data is
 encoded as base64. Without it the data (as a sequence of octets) is
@@ -96,7 +96,7 @@ def encode(raw_bytes,
 
     :param raw_bytes: Raw bytes
     :param mime_type: The mime type, e.g. ``b"text/css"`` or ``b"image/png"``. Default ``b"text/plain"``.
-    :param charset:	Set to ``b"utf-8"`` if you want the data URL to contain a ``b"charset=utf-8"``
+    :param charset: Set to ``b"utf-8"`` if you want the data URL to contain a ``b"charset=utf-8"``
             component. Default ``b'US-ASCII'``. This does not mean however, that your
             raw_bytes will be encoded by this function. You must ensure that
             if you specify, ``b"utf-8"`` (or anything else) as the encoding, you
@@ -105,7 +105,7 @@ def encode(raw_bytes,
             .. note:: This function employs a heuristic to know when to default this
                     parameter (for example, it is not used for image mime types). To be absolutely
                     sure, set it explicitly (None always meaning not to use it).
-    :param encoder:	The string "base64" (the default) or None. If None, the data
+    :param encoder: The string "base64" (the default) or None. If None, the data
             is directly output as quoted ASCII bytes.
     :returns: Data URL byte string
     """
