@@ -1,8 +1,11 @@
+*.py[cod]
 
-# /
 /.project
 /.pydevproject
-/.settings
+/.settings/
 
-# /src/
+# Distribution / packaging
+build/
+dist/
+
 /src/nti.property.egg-info
