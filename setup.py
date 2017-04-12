@@ -8,6 +8,7 @@ entry_points = {
 
 TESTS_REQUIRE = [
     'fudge',
+    'nose',
     'nose2[coverage_plugin]',
     'nti.testing',
     'pyhamcrest',
