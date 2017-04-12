@@ -11,8 +11,6 @@ from hamcrest import is_
 from hamcrest import none
 from hamcrest import assert_that
 
-from nose.tools import assert_raises
-
 import unittest
 
 from zope.schema.interfaces import InvalidURI
@@ -25,8 +23,7 @@ class TestURLProperty(unittest.TestCase):
     def test_getitem(self):
         prop = UrlProperty()
         getter = prop.make_getitem()
-
-        with assert_raises(KeyError):
+        with self.assertRaises(KeyError):
             getter(object(), 'foobar')
         assert_that(getter(object(), prop.data_name), is_(none()))
 
@@ -50,5 +47,5 @@ class TestURLProperty(unittest.TestCase):
 
         class O(object):
             pass
-        with assert_raises(InvalidURI):
+        with self.assertRaises(InvalidURI):
             prop.__set__(O(), '/path/to/thing')
