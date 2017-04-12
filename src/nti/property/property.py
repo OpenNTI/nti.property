@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Utilities having to do with property definitions and access.
-
 .. $Id$
 """
 

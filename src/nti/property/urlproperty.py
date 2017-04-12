@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Classes and utilities for working with URLs stored on persistent objects.
-
 .. $Id$
 """
 
