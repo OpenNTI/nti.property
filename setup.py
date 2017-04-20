@@ -7,11 +7,8 @@ entry_points = {
 }
 
 TESTS_REQUIRE = [
-    'fudge',
-    'nose2[coverage_plugin]',
     'nti.testing',
     'pyhamcrest',
-    'z3c.baseregistry',
     'zope.testrunner',
 ]
 
@@ -25,7 +22,8 @@ setup(
     author='Jason Madden',
     author_email='jason@nextthought.com',
     description="NTI Property",
-    long_description=_read('README.rst'),
+    long_description=(_read('README.rst') + '\n\n' + _read("CHANGES.rst")),
+    url="https://github.com/NextThought/nti.property",
     license='Apache',
     keywords='Property',
     classifiers=[
@@ -49,10 +47,11 @@ setup(
         'zope.cachedescriptors',
         'zope.contenttype',
         'zope.file',
-        'zope.schema'
+        'zope.schema',
     ],
     extras_require={
         'test': TESTS_REQUIRE,
     },
     entry_points=entry_points,
+    test_suite="nti.property.tests",
 )

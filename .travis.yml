@@ -2,14 +2,11 @@ language: python
 sudo: false
 python:
   - 2.7
-  - 3.4
-  - 3.5
+  - 3.6
   - pypy-5.4.1
 dist: trusty
 script:
-# Coverage is slow on this old version of pypy
-  - if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then coverage run `which zope-testrunner` --test-path=src  --auto-color --auto-progress --all; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == pypy* ]]; then zope-testrunner --test-path=src --all; fi
+  - coverage run -m zope.testrunner --test-path=src  --auto-color --auto-progress --all
 after_success:
   - coveralls
 notifications:
@@ -22,14 +19,8 @@ install:
   - pip install -U zope.testrunner
   - pip install -U -e ".[test]"
 
-# cache: pip seems not to work if `install` is replaced (https://github.com/travis-ci/travis-ci/issues/3239)
-cache:
-  directories:
-    - $HOME/.cache/pip
-    - $HOME/.venv
-    - $HOME/.runtimes
-    - $HOME/.wheelhouse
+
+cache: pip
 
 before_cache:
     - rm -f $HOME/.cache/pip/log/debug.log
-    
