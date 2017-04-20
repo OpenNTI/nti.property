@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import
+from __future__ import print_function, absolute_import
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -16,7 +16,9 @@ from nti.testing.layers import ConfiguringLayerMixin
 import zope.testing.cleanup
 
 
-class PropertyTestLayer(ZopeComponentLayer, GCLayerMixin, ConfiguringLayerMixin):
+class PropertyTestLayer(ZopeComponentLayer,
+                        GCLayerMixin, 
+                        ConfiguringLayerMixin):
 
     set_up_packages = ('nti.property',)
 

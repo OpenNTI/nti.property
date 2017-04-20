@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 # disable: accessing protected members, too many methods
@@ -18,7 +18,7 @@ import unittest
 from nti.property.dataurl import encode
 from nti.property.dataurl import DataURL
 
-GIF_DATAURL = b'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
+GIF_DATAURL = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
 
 
 class TestDataURL(unittest.TestCase):
@@ -27,5 +27,5 @@ class TestDataURL(unittest.TestCase):
         url = DataURL(GIF_DATAURL)
         assert_that(url, has_property('mimeType', 'image/gif'))
         assert_that(url, has_property('data', is_not(none())))
-        encoded = encode(url.data, b'image/gif')
+        encoded = encode(url.data, 'image/gif')
         assert_that(encoded, is_(GIF_DATAURL))

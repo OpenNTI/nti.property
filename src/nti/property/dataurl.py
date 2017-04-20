@@ -12,11 +12,9 @@ URL characters and using the standard %xx hex encoding of URLs for
 octets outside that range. If ``<MIME-type>`` is omitted, it defaults
 to ``text/plain;charset=US-ASCII``. (As a shorthand, the type can be
 omitted but the charset parameter supplied.)
-
-.. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -50,10 +48,10 @@ def decode(data_url):
 
 
 def _do_decode(data_url):
-    metadata, encoded = data_url.rsplit(b",", 1)
-    _, metadata = metadata.split(b"data:", 1)
+    metadata, encoded = data_url.rsplit(",", 1)
+    _, metadata = metadata.split("data:", 1)
     metadata_parts = metadata.rsplit(b";", 1)
-    if metadata_parts[-1] == b"base64":
+    if metadata_parts[-1] == "base64":
         _decode = b64decode
         metadata_parts = metadata_parts[:-1]
     else:
@@ -83,12 +81,12 @@ class DataURL(str):  # native string on both py2 and py3
     def mimeType(self):
         return self._decoded[1]
 
-_def_charset = b'US-ASCII'
+_def_charset = 'US-ASCII'
 _marker = object()
 
 
 def encode(raw_bytes,
-           mime_type=b'text/plain',
+           mime_type='text/plain',
            charset=_marker,
            encoder="base64"):
     """
@@ -114,12 +112,12 @@ def encode(raw_bytes,
 
     if encoder == "base64":
         _encode = b64encode
-        codec = b";base64,"
+        codec = ";base64,"
     else:
         # We want ASCII bytes.
         _encode = lambda data: quote(data).encode('ascii')
-        codec = b","
-    mime_type = mime_type or b""
+        codec = ","
+    mime_type = mime_type or ""
 
     if charset is _marker:
         if mime_type.startswith('text/'):
@@ -127,6 +125,6 @@ def encode(raw_bytes,
         else:
             charset = None
 
-    charset = b";charset=" + charset if charset else b""
+    charset = ";charset=" + charset if charset else ""
     encoded = _encode(raw_bytes)
-    return b''.join((b"data:", mime_type, charset, codec, encoded))
+    return ''.join(("data:", mime_type, charset, codec, encoded))

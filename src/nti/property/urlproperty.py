@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id$
 """
 
-from __future__ import print_function, unicode_literals, absolute_import, division
+from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
@@ -139,7 +138,7 @@ class UrlProperty(object):
             self._setattr(instance, self.url_attr_name, value)
             return
 
-        if value.startswith(b'data:'):
+        if value.startswith('data:'):
             raw_bytes, mime_type = dataurl.decode(value)
             if self.max_file_size and len(raw_bytes) > self.max_file_size:
                 raise ConstraintNotSatisfied("The uploaded file is too large.")
