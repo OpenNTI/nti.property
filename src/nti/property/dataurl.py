@@ -50,7 +50,7 @@ def decode(data_url):
 def _do_decode(data_url):
     metadata, encoded = data_url.rsplit(",", 1)
     _, metadata = metadata.split("data:", 1)
-    metadata_parts = metadata.rsplit(b";", 1)
+    metadata_parts = metadata.rsplit(";", 1)
     if metadata_parts[-1] == "base64":
         _decode = b64decode
         metadata_parts = metadata_parts[:-1]
