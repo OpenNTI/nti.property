@@ -13,15 +13,16 @@ from hamcrest import is_not
 from hamcrest import assert_that
 from hamcrest import has_property
 
-import unittest
-
 from nti.property.dataurl import encode
 from nti.property.dataurl import DataURL
+
+from nti.property.tests import PropertyLayerTest
+
 
 GIF_DATAURL = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
 
 
-class TestDataURL(unittest.TestCase):
+class TestDataURL(PropertyLayerTest):
 
     def test_data_url_class(self):
         url = DataURL(GIF_DATAURL)

@@ -16,11 +16,11 @@ from nti.testing.layers import ConfiguringLayerMixin
 import zope.testing.cleanup
 
 
-class PropertyTestLayer(ZopeComponentLayer,
-                        GCLayerMixin, 
-                        ConfiguringLayerMixin):
+class SharedConfiguringTestLayer(ZopeComponentLayer,
+                                 GCLayerMixin,
+                                 ConfiguringLayerMixin):
 
-    set_up_packages = ('nti.property',)
+    set_up_packages = ()
 
     @classmethod
     def setUp(cls):
@@ -41,4 +41,4 @@ class PropertyTestLayer(ZopeComponentLayer,
 
 
 class PropertyLayerTest(unittest.TestCase):
-    layer = PropertyTestLayer
+    layer = SharedConfiguringTestLayer

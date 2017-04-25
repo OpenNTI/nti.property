@@ -10,7 +10,7 @@ __docformat__ = "restructuredtext en"
 logger = __import__('logging').getLogger(__name__)
 
 try:
-    import urlparse
+    from urlparse import urlparse
 except ImportError:
     from urllib.parse import urlparse
 
@@ -158,7 +158,7 @@ class UrlProperty(object):
             self._setattr(instance, self.file_attr_name, the_file)
         else:
             # Be sure it at least parses
-            parsed = urlparse.urlparse(value)
+            parsed = urlparse(value)
             if not parsed.netloc:
                 if self.reject_url_with_missing_host:
                     raise InvalidURI(value)

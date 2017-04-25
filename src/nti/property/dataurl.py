@@ -23,8 +23,12 @@ logger = __import__('logging').getLogger(__name__)
 
 from zope.cachedescriptors.property import CachedProperty
 
-from urllib import quote
-from urllib import unquote
+try:
+    from urllib import quote
+    from urllib import unquote
+except ImportError:
+    from urllib.parse import quote
+    from urllib.parse import unquote
 
 from base64 import b64decode
 from base64 import b64encode

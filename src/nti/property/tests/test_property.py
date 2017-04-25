@@ -13,8 +13,6 @@ from hamcrest import assert_that
 from hamcrest import has_property
 from hamcrest import same_instance
 
-import unittest
-
 from zope import interface
 
 from zope.annotation import interfaces as an_interfaces
@@ -23,8 +21,10 @@ from nti.property.property import dict_alias
 from nti.property.property import CachedProperty
 from nti.property.property import annotation_alias
 
+from nti.property.tests import PropertyLayerTest
 
-class TestProperty(unittest.TestCase):
+
+class TestProperty(PropertyLayerTest):
 
     def test_dict_alias(self):
         class X(object):

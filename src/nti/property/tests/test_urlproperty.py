@@ -11,14 +11,14 @@ from hamcrest import is_
 from hamcrest import none
 from hamcrest import assert_that
 
-import unittest
-
 from zope.schema.interfaces import InvalidURI
 
 from nti.property.urlproperty import UrlProperty
 
+from nti.property.tests import PropertyLayerTest
 
-class TestURLProperty(unittest.TestCase):
+
+class TestURLProperty(PropertyLayerTest):
 
     def test_getitem(self):
         prop = UrlProperty()
