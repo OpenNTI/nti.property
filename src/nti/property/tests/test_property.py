@@ -17,14 +17,32 @@ from zope import interface
 
 from zope.annotation import interfaces as an_interfaces
 
+from nti.property.property import alias
 from nti.property.property import dict_alias
+from nti.property.property import LazyOnClass
 from nti.property.property import CachedProperty
+from nti.property.property import dict_read_alias
 from nti.property.property import annotation_alias
 
 from nti.property.tests import PropertyLayerTest
 
 
 class TestProperty(PropertyLayerTest):
+
+    def test_alias(self):
+        
+        class X(object):
+            
+            y = alias('x')
+            
+            def __init__(self):
+                self.x = 1
+
+        x = X()
+        assert_that(x, has_property('x', 1))
+        assert_that(x, has_property('y', 1))
+        x.y = 2
+        assert_that(x, has_property('y', 2))
 
     def test_dict_alias(self):
         class X(object):
@@ -39,6 +57,19 @@ class TestProperty(PropertyLayerTest):
         x.y = 2
         assert_that(x, has_property('y', 2))
         assert_that(x, has_property('x', 2))
+
+    def test_dict_read_alias(self):
+        class X(object):
+
+            def __init__(self):
+                self.x = 1
+
+            y = dict_read_alias('x')
+
+        assert_that(X(), has_property('y', 1))
+        x = X()
+        with self.assertRaises(TypeError):
+            x.y = 2
 
     def test_cached_property(self):
 
@@ -101,3 +132,26 @@ class TestProperty(PropertyLayerTest):
         # quiet re-del
         del x.the_alias
         assert_that(x, has_property('the_alias', 1))
+
+        class Y(dict):
+            pass
+        
+        @interface.implementer(an_interfaces.IAnnotations)
+        class Z(dict):
+            y = Y()
+            the_alias = annotation_alias('the.key',
+                                         annotation_property="Y",
+                                         delete=True, default=1)
+            
+    def test_lazy_on_class(self):
+
+        class X(dict):
+            
+            @LazyOnClass
+            def _foo(self):
+                return "boo"
+
+        x = X()
+        assert_that(x, has_property('_foo', is_("boo")))
+        x2 = X()
+        assert_that(x2, has_property('_foo', is_("boo")))
