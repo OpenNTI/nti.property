@@ -68,7 +68,7 @@ class TestProperty(PropertyLayerTest):
 
         assert_that(X(), has_property('y', 1))
         x = X()
-        with self.assertRaises(TypeError):
+        with self.assertRaises(AttributeError):
             x.y = 2
 
     def test_cached_property(self):
