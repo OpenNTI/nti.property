@@ -72,16 +72,6 @@ def dict_read_alias(key_name, doc=None):
     return property(lambda self: self.__dict__[key_name],
                     doc=doc)
 
-from zope.cachedescriptors.property import readproperty
-readproperty = readproperty  # BWC export
-
-from zope.cachedescriptors.property import Lazy
-Lazy = Lazy  # BWC export
-
-from zope.cachedescriptors.property import CachedProperty
-CachedProperty = CachedProperty  # BWC export
-
-
 class LazyOnClass(object):
     """
     Like :class:`zope.cachedescriptors.property.Lazy`, but
@@ -136,8 +126,8 @@ def annotation_alias(annotation_name, annotation_property=None, default=None,
         factory = lambda self: IAnnotations(getattr(self, annotation_property))
 
     fget = lambda self: factory(self).get(annotation_name, default)
-    fset = lambda self, nv: operator.setitem(factory(self), 
-                                             annotation_name, 
+    fset = lambda self, nv: operator.setitem(factory(self),
+                                             annotation_name,
                                              nv)
     fdel = None
     if delete:

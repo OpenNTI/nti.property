@@ -58,7 +58,7 @@ class UrlProperty(object):
     instance holding the property. This object will ensure that the file is located
     (in the :mod:`zope.location` sense) as a child of the instance, and that it has a name;
     it is the responsibility of the instance to arrange for it to be traversable
-    (through implementing __getitem__ or ITraversable or an adapter).
+    (through implementing ``__getitem__`` or ITraversable or an adapter).
 
     """
 
@@ -144,7 +144,7 @@ class UrlProperty(object):
             if self.max_file_size and len(raw_bytes) > self.max_file_size:
                 raise ConstraintNotSatisfied("The uploaded file is too large.")
             major, minor, parms = ct_parse(mime_type)
-            the_file = zfile.File(mimeType=major + '/' + minor, 
+            the_file = zfile.File(mimeType=major + '/' + minor,
                                   parameters=parms)
             fp = the_file.open('w')
             fp.write(raw_bytes)

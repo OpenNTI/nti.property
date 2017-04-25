@@ -13,7 +13,6 @@ octets outside that range. If ``<MIME-type>`` is omitted, it defaults
 to ``text/plain;charset=US-ASCII``. (As a shorthand, the type can be
 omitted but the charset parameter supplied.)
 
-.. $Id$
 """
 
 from __future__ import print_function, absolute_import, division
@@ -21,7 +20,6 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
-import six
 
 from zope.cachedescriptors.property import CachedProperty
 
@@ -115,7 +113,7 @@ def encode(raw_bytes,
             is directly output as quoted ASCII bytes.
     :returns: Data URL byte string
     """
-    if not isinstance(raw_bytes, six.binary_type):
+    if not isinstance(raw_bytes, bytes): # pragma: no cover
         raise TypeError("only raw bytes can be encoded")
 
     if encoder == "base64":

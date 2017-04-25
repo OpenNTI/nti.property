@@ -20,7 +20,6 @@ from zope.annotation import interfaces as an_interfaces
 from nti.property.property import alias
 from nti.property.property import dict_alias
 from nti.property.property import LazyOnClass
-from nti.property.property import CachedProperty
 from nti.property.property import dict_read_alias
 from nti.property.property import annotation_alias
 
@@ -30,11 +29,11 @@ from nti.property.tests import PropertyLayerTest
 class TestProperty(PropertyLayerTest):
 
     def test_alias(self):
-        
+
         class X(object):
-            
+
             y = alias('x')
-            
+
             def __init__(self):
                 self.x = 1
 
@@ -72,7 +71,7 @@ class TestProperty(PropertyLayerTest):
             x.y = 2
 
     def test_cached_property(self):
-
+        from zope.cachedescriptors.property import CachedProperty
         # Usable directly
         class X(object):
 
@@ -135,18 +134,18 @@ class TestProperty(PropertyLayerTest):
 
         class Y(dict):
             pass
-        
+
         @interface.implementer(an_interfaces.IAnnotations)
         class Z(dict):
             y = Y()
             the_alias = annotation_alias('the.key',
                                          annotation_property="Y",
                                          delete=True, default=1)
-            
+
     def test_lazy_on_class(self):
 
         class X(dict):
-            
+
             @LazyOnClass
             def _foo(self):
                 return "boo"

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id$
+
 """
 
 from __future__ import print_function, absolute_import, division
@@ -36,6 +36,6 @@ class DataURI(schema.URI):
     def fromUnicode(self, value):
         if isinstance(value, dataurl.DataURL):
             return value
-        else:
-            super(DataURI, self).fromUnicode(value)
-            return dataurl.DataURL(value)
+
+        super(DataURI, self).fromUnicode(value)
+        return dataurl.DataURL(value)

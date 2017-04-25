@@ -4,7 +4,6 @@ python:
   - 2.7
   - 3.6
   - pypy-5.4.1
-dist: trusty
 script:
   - coverage run -m zope.testrunner --test-path=src  --auto-color --auto-progress --all
 after_success:
@@ -16,7 +15,6 @@ install:
   - pip install -U pip
   - pip install -U setuptools
   - pip install -U coveralls coverage
-  - pip install -U zope.testrunner
   - pip install -U -e ".[test]"
 
 
