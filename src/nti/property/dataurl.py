@@ -12,6 +12,8 @@ URL characters and using the standard %xx hex encoding of URLs for
 octets outside that range. If ``<MIME-type>`` is omitted, it defaults
 to ``text/plain;charset=US-ASCII``. (As a shorthand, the type can be
 omitted but the charset parameter supplied.)
+
+.. $Id$
 """
 
 from __future__ import print_function, absolute_import, division
