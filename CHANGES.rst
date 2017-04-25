@@ -7,4 +7,5 @@
 ==================
 
 - First PyPI release.
-- Add support for Python 3.
+- Add support for Python 3.6.
+- Remove backward compatibility exports.

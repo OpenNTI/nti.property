@@ -1,12 +1,14 @@
 *.py[cod]
 
-/.project
-/.pydevproject
-/.settings/
+.project
+.pydevproject
+.settings/
 
 # Distribution / packaging
 build/
 dist/
 
-/src/nti.property.egg-info
-/.tox/
+*.egg-info
+.tox/
+.coverage
+htmlcov/
