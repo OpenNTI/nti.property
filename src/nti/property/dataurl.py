@@ -21,6 +21,8 @@ __docformat__ = "restructuredtext en"
 
 logger = __import__('logging').getLogger(__name__)
 
+import six
+
 from zope.cachedescriptors.property import CachedProperty
 
 try:
@@ -113,7 +115,7 @@ def encode(raw_bytes,
             is directly output as quoted ASCII bytes.
     :returns: Data URL byte string
     """
-    if not isinstance(raw_bytes, str):
+    if not isinstance(raw_bytes, six.binary_type):
         raise TypeError("only raw bytes can be encoded")
 
     if encoder == "base64":
@@ -133,4 +135,6 @@ def encode(raw_bytes,
 
     charset = ";charset=" + charset if charset else ""
     encoded = _encode(raw_bytes)
+    if isinstance(encoded, bytes):
+        encoded = encoded.decode("utf-8")
     return ''.join(("data:", mime_type, charset, codec, encoded))
