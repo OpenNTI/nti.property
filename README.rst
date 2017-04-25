@@ -9,4 +9,6 @@
     :target: https://coveralls.io/github/NextThought/nti.property?branch=master
 
 nti.property offers a set of classes and utility functions to set
-properties on objects or classes
+properties on objects or classes.
+
+Complete documentation can be found at http://ntiproperty.readthedocs.io

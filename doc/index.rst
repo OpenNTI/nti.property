@@ -8,13 +8,8 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
-   nti.property
+   api
    changelog
-
-.. automodule:: nti.property
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 
 ====================
