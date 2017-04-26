@@ -7,16 +7,23 @@ __docformat__ = "restructuredtext en"
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
+import unittest
+
 from hamcrest import is_
 from hamcrest import none
 from hamcrest import assert_that
+from hamcrest import has_properties
+from hamcrest import is_in
 
 from zope.schema.interfaces import InvalidURI
+from zope.schema.interfaces import ConstraintNotSatisfied
+
 
 from nti.property.urlproperty import UrlProperty
 
 from nti.property.tests import PropertyLayerTest
 
+GIF_DATAURL = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
 
 class TestURLProperty(PropertyLayerTest):
 
@@ -49,3 +56,67 @@ class TestURLProperty(PropertyLayerTest):
             pass
         with self.assertRaises(InvalidURI):
             prop.__set__(O(), '/path/to/thing')
+
+        prop.reject_url_with_missing_host = False
+
+        o = O()
+        o._url = None # pylint:disable=attribute-defined-outside-init
+        prop.ignore_url_with_missing_host = True
+        prop.__set__(o, '/path/to/thing')
+
+        assert_that(prop.__get__(o, O), is_(none()))
+
+        prop.ignore_url_with_missing_host = False
+        prop.__set__(o, '/path/to/thing')
+
+        assert_that(prop.__get__(o, O), is_('/path/to/thing'))
+
+    def test_custom_attr_names(self):
+        prop = UrlProperty(data_name='DATA', url_attr_name="URL", file_attr_name='FILE')
+        assert_that(prop, has_properties(data_name='DATA',
+                                         url_attr_name='URL',
+                                         file_attr_name='FILE'))
+
+    def test_use_dict_cover(self):
+
+        class O(object):
+            prop = UrlProperty(use_dict=True)
+
+            @property
+            def data(self):
+                raise AttributeError('data')
+
+            _file = _url = data
+
+            __getitem__ = prop.make_getitem()
+
+            def __contains__(self, key):
+                return o[key]
+
+        o = O()
+        o.__dict__['_file'] = 'data_value'
+        assert_that('data', is_in(o))# has_entry('data', 'data_value'))
+        assert_that(O.prop.get_file(o), none())
+        with self.assertRaises(AttributeError):
+            getattr(o, 'prop')
+
+        # Settings adds fields
+        o.prop = ''
+
+        assert_that(o.__dict__['_file'], none())
+        assert_that(o.__dict__['_url'], is_(''))
+        assert_that(O.prop.get_file(o), none())
+
+        # Starts out as the data url
+        assert_that(o.prop, is_(''))
+
+        o.prop = GIF_DATAURL
+
+        assert_that(o.prop, is_(GIF_DATAURL))
+
+        O.prop.max_file_size = 1
+        with self.assertRaises(ConstraintNotSatisfied):
+            o.prop = GIF_DATAURL
+
+def test_suite():
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)

@@ -100,7 +100,10 @@ class UrlProperty(object):
         """
         As a convenience and to help with traversability, the results
         of this method can be assigned to __getitem__ (if there is no other instance
-        of this property, or no other getitem)
+        of this property, or no other getitem).
+
+        .. caution:: The traversal key must be equal to the ``data_name``, but
+           the returned dictionary key is the ``file_attr_name``.
         """
         def __getitem__(s, key):
             if key == self.data_name:

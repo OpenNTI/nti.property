@@ -7,6 +7,8 @@ __docformat__ = "restructuredtext en"
 # disable: accessing protected members, too many methods
 # pylint: disable=W0212,R0904
 
+import unittest
+
 from hamcrest import is_
 from hamcrest import has_entry
 from hamcrest import assert_that
@@ -18,6 +20,7 @@ from zope import interface
 from zope.annotation import interfaces as an_interfaces
 
 from nti.property.property import alias
+from nti.property.property import read_alias
 from nti.property.property import dict_alias
 from nti.property.property import LazyOnClass
 from nti.property.property import dict_read_alias
@@ -56,6 +59,18 @@ class TestProperty(PropertyLayerTest):
         x.y = 2
         assert_that(x, has_property('y', 2))
         assert_that(x, has_property('x', 2))
+
+    def test_read_alias(self):
+
+        class O(object):
+            x = 1
+            y = read_alias('x')
+
+        o = O()
+        assert_that(o, has_property('y', o.x))
+        with self.assertRaises(AttributeError):
+            o.y = 1
+
 
     def test_dict_read_alias(self):
         class X(object):
@@ -113,7 +128,9 @@ class TestProperty(PropertyLayerTest):
 
         @interface.implementer(an_interfaces.IAnnotations)
         class X(dict):
-            the_alias = annotation_alias('the.key', delete=True, default=1)
+            the_alias = annotation_alias('the.key',
+                                         delete=True,
+                                         default=1)
 
         x = X()
         # Default value
@@ -135,12 +152,29 @@ class TestProperty(PropertyLayerTest):
         class Y(dict):
             pass
 
+        # Annotation based on a property, that can't be deleted
+        # quietly
         @interface.implementer(an_interfaces.IAnnotations)
         class Z(dict):
-            y = Y()
+
             the_alias = annotation_alias('the.key',
-                                         annotation_property="Y",
-                                         delete=True, default=1)
+                                         annotation_property="context",
+                                         delete=True, delete_quiet=False,
+                                         default=1)
+
+            def __init__(self):
+                self.context = X()
+
+        z = Z()
+        z.context['the.key'] = 42
+        assert_that(z, has_property('the_alias', 42))
+        del z.the_alias
+        assert_that(z, has_property('the_alias', 1))
+
+        with self.assertRaises(KeyError):
+            del z.the_alias
+        assert_that(z, has_property('the_alias', 1))
+
 
     def test_lazy_on_class(self):
 
@@ -150,7 +184,13 @@ class TestProperty(PropertyLayerTest):
             def _foo(self):
                 return "boo"
 
+        assert_that(X._foo, is_(LazyOnClass))
+
         x = X()
         assert_that(x, has_property('_foo', is_("boo")))
         x2 = X()
         assert_that(x2, has_property('_foo', is_("boo")))
+
+
+def test_suite():
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
