@@ -18,20 +18,18 @@ omitted but the charset parameter supplied.)
 from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-logger = __import__('logging').getLogger(__name__)
-
-
-from zope.cachedescriptors.property import CachedProperty
-
 try:
-    from urllib import quote
-    from urllib import unquote
-except ImportError:
     from urllib.parse import quote
     from urllib.parse import unquote
+except ImportError: # pragma: no cover
+    # Python 2
+    from urllib import quote
+    from urllib import unquote
 
 from base64 import b64decode
 from base64 import b64encode
+
+from zope.cachedescriptors.property import CachedProperty
 
 # Originally inspired by
 # http://code.google.com/p/python-mom/source/browse/mom/net/scheme/dataurl.py?

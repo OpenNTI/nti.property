@@ -12,17 +12,16 @@ import unittest
 from hamcrest import is_
 from hamcrest import assert_that
 from hamcrest import same_instance
+from hamcrest import has_property
 
 from nti.property.schema import DataURI
-
-from nti.property.tests import PropertyLayerTest
 
 from zope.schema.interfaces import InvalidURI
 
 GIF_DATAURL = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
 
 
-class TestSchema(PropertyLayerTest):
+class TestSchema(unittest.TestCase):
 
     def test_data_url_class(self):
         value = DataURI.is_valid_data_uri(GIF_DATAURL)
@@ -33,10 +32,10 @@ class TestSchema(PropertyLayerTest):
         assert_that(data_url, is_(GIF_DATAURL))
         assert_that(field.fromUnicode(data_url), is_(same_instance(data_url)))
 
+        bad_data = u'data2:notvalid'
+        with self.assertRaises(InvalidURI) as exc:
+            field.fromUnicode(bad_data)
 
-        with self.assertRaises(InvalidURI):
-            field.fromUnicode(u'data2:notvalid')
-
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
+        ex = exc.exception
+        assert_that(ex, has_property('value', bad_data))
+        assert_that(ex, has_property('field', field))

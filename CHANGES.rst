@@ -3,10 +3,12 @@
 =========
 
 
-1.0.1 (unreleased)
+1.1.0 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Add support for Python 3.7.
+
+- Add support for zope.schema 4.7.
 
 
 1.0.0 (2017-04-26)

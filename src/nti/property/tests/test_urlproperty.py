@@ -21,11 +21,10 @@ from zope.schema.interfaces import ConstraintNotSatisfied
 
 from nti.property.urlproperty import UrlProperty
 
-from nti.property.tests import PropertyLayerTest
 
 GIF_DATAURL = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
 
-class TestURLProperty(PropertyLayerTest):
+class TestURLProperty(unittest.TestCase):
 
     def test_getitem(self):
         prop = UrlProperty()

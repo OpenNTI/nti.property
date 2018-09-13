@@ -26,10 +26,8 @@ from nti.property.property import LazyOnClass
 from nti.property.property import dict_read_alias
 from nti.property.property import annotation_alias
 
-from nti.property.tests import PropertyLayerTest
 
-
-class TestProperty(PropertyLayerTest):
+class TestProperty(unittest.TestCase):
 
     def test_alias(self):
 
@@ -190,7 +188,3 @@ class TestProperty(PropertyLayerTest):
         assert_that(x, has_property('_foo', is_("boo")))
         x2 = X()
         assert_that(x2, has_property('_foo', is_("boo")))
-
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
