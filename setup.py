@@ -34,6 +34,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
@@ -49,10 +50,15 @@ setup(
         'zope.cachedescriptors >= 4.2',
         'zope.contenttype',
         'zope.file >= 1.0',
-        'zope.schema',
+        'zope.schema >= 4.7.0',
     ],
     extras_require={
         'test': TESTS_REQUIRE,
+        'docs': [
+            'Sphinx',
+            'repoze.sphinx.autointerface',
+            'sphinx_rtd_theme'
+        ],
     },
     entry_points=entry_points,
     test_suite="nti.property.tests",

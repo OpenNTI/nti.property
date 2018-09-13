@@ -18,13 +18,11 @@ from nti.property.dataurl import encode
 from nti.property.dataurl import decode
 from nti.property.dataurl import DataURL
 
-from nti.property.tests import PropertyLayerTest
-
 
 GIF_DATAURL = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
 GIF_DATA = b'GIF89a\x0b\x00\x0b\x00\x80\x00\x00\x00\x00\xde\x99\xfff!\xf9\x04\x01\x00\x00\x01\x00,\x00\x00\x00\x00\x0b\x00\x0b\x00\x00\x02\x14\x84\x0f\xa1\x91\xcb\x8e\xe2Y\x8dV)\xdd\xa3\xba\xb2\xac\x85\xe2\x18\x16\x00;'
 
-class TestDataURL(PropertyLayerTest):
+class TestDataURL(unittest.TestCase):
 
     def test_data_url_class(self):
         url = DataURL(GIF_DATAURL)
@@ -51,6 +49,3 @@ class TestDataURL(PropertyLayerTest):
         url = encode(data, encoder=None)
 
         assert_that(url, is_('data:text/plain;charset=US-ASCII,abcd'))
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
