@@ -18,7 +18,10 @@ from nti.property.schema import DataURI
 
 from zope.schema.interfaces import InvalidURI
 
-GIF_DATAURL = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
+GIF_DATAURL = (
+    'data:image/gif;base64,'
+    'R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
+)
 
 
 class TestSchema(unittest.TestCase):

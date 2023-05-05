@@ -22,7 +22,12 @@ from zope.schema.interfaces import ConstraintNotSatisfied
 from nti.property.urlproperty import UrlProperty
 
 
-GIF_DATAURL = 'data:image/gif;base64,R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
+GIF_DATAURL = (
+    'data:image/gif;base64,'
+    'R0lGODlhCwALAIAAAAAA3pn/ZiH5BAEAAAEALAAAAAALAAsAAAIUhA+hkcuO4lmNVindo7qyrIXiGBYAOw=='
+)
+
+# pylint:disable=unnecessary-dunder-call
 
 class TestURLProperty(unittest.TestCase):
 

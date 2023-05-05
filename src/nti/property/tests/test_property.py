@@ -147,8 +147,6 @@ class TestProperty(unittest.TestCase):
         del x.the_alias
         assert_that(x, has_property('the_alias', 1))
 
-        class Y(dict):
-            pass
 
         # Annotation based on a property, that can't be deleted
         # quietly

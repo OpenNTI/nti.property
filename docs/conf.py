@@ -14,6 +14,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 import os
+import sys
 
 # -- Project information -----------------------------------------------------
 
@@ -67,7 +68,7 @@ add_module_names = False
 # With Furo, we don't need to have individual ``.. contents::`` directives;
 # if we move away from it we might want to add them back.
 
-html_theme = 'furo'
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -77,13 +78,16 @@ html_static_path = ['_static']
 html_css_files = [
     'custom.css',
 ]
-
-html_theme_options = {
-    'light_css_variables': {
-        'font-stack': '"SF Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
-        'font-stack--monospace': '"JetBrainsMono", "JetBrains Mono", "JetBrains Mono Regular", "JetBrainsMono-Regular", ui-monospace, profont, monospace',
-    },
-}
+if sys.version_info[0] >= 3:
+    html_theme = 'furo'
+    html_theme_options = {
+        'light_css_variables': {
+            'font-stack': '"SF Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
+            'font-stack--monospace': '"JetBrainsMono", "JetBrains Mono", "JetBrains Mono Regular", "JetBrainsMono-Regular", ui-monospace, profont, monospace',
+        },
+    }
+else:
+    html_theme = 'sphinx_rtd_theme'
 
 ## sphinx.ext.todo
 # Display .. todo:: in the output.

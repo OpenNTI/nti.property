@@ -62,7 +62,9 @@ setup(
         'docs': [
             'Sphinx',
             'repoze.sphinx.autointerface',
-            'furo',
+            'furo; python_version >= "3.6"',
+            'sphinx_rtd_theme; python_version < "3.6"',
+
         ],
     },
     entry_points=entry_points,

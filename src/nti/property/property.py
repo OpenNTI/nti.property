@@ -121,15 +121,21 @@ def annotation_alias(annotation_name, annotation_property=None, default=None,
     if doc is None:
         doc = 'Alias for annotation ' + annotation_name
 
-    factory = IAnnotations
-    if annotation_property:
-        factory = lambda self: IAnnotations(getattr(self, annotation_property))
 
-    fget = lambda self: factory(self).get(annotation_name, default)
-    fset = lambda self, nv: operator.setitem(factory(self),
-                                             annotation_name,
-                                             nv)
-    fdel = None
+    if annotation_property:
+        def factory(self):
+            return IAnnotations(getattr(self, annotation_property))
+    else:
+        factory = IAnnotations
+
+    def fget(self):
+        # pylint:disable-next=too-many-function-args
+        return factory(self).get(annotation_name, default)
+
+    def fset(self, nv):
+        factory(self)[annotation_name] = nv
+
+
     if delete:
         def fdel(self):
             try:
@@ -137,5 +143,7 @@ def annotation_alias(annotation_name, annotation_property=None, default=None,
             except KeyError:
                 if not delete_quiet:
                     raise
+    else:
+        fdel = None
 
     return property(fget, fset, fdel, doc=doc)

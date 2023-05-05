@@ -40,10 +40,10 @@ def decode(data_url):
     Decodes a data URL into raw bytes and metadata.
 
     :param data_url: The data url string.
-            If a mime-type definition is missing in the metadata,
-            ``text/plain;charset=US-ASCII`` will be used as default mime-type.
+       If a mime-type definition is missing in the metadata,
+       ``text/plain;charset=US-ASCII`` will be used as default mime-type.
     :returns: A 2-tuple: ``(bytes, mime_type_string)``
-            The mime_type string will not be parsed. See :func:`zope.contenttype.parse.parse` for that.
+       The mime_type string will not be parsed. See :func:`zope.contenttype.parse.parse` for that.
     """
 
     if isinstance(data_url, DataURL):
@@ -97,7 +97,8 @@ def encode(raw_bytes,
     Encodes raw bytes into a data URL scheme string.
 
     :param raw_bytes: Raw bytes
-    :param mime_type: The mime type, e.g. ``b"text/css"`` or ``b"image/png"``. Default ``b"text/plain"``.
+    :param mime_type: The mime type, e.g.
+         ``b"text/css"`` or ``b"image/png"``. Default ``b"text/plain"``.
     :param charset: Set to ``b"utf-8"`` if you want the data URL to contain a ``b"charset=utf-8"``
             component. Default ``b'US-ASCII'``. This does not mean however, that your
             raw_bytes will be encoded by this function. You must ensure that
@@ -119,7 +120,8 @@ def encode(raw_bytes,
         codec = ";base64,"
     else:
         # We want ASCII bytes.
-        _encode = lambda data: quote(data).encode('ascii')
+        def _encode(data):
+            return quote(data).encode('ascii')
         codec = ","
     mime_type = mime_type or ""
 

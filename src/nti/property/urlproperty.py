@@ -117,8 +117,8 @@ class UrlProperty(object):
         if there is one, otherwise None.
         """
         the_file = self._getattr(instance, self.file_attr_name, None)
-        if IFile.providedBy(the_file):
-            return the_file
+        # pylint:disable-next=no-value-for-parameter
+        return (the_file if IFile.providedBy(the_file) else None)
 
     def __get__(self, instance, owner):
         if instance is None:
