@@ -171,6 +171,23 @@ class TestProperty(unittest.TestCase):
             del z.the_alias
         assert_that(z, has_property('the_alias', 1))
 
+        # Annotation that can't be
+        # deleted at all
+        @interface.implementer(an_interfaces.IAnnotations)
+        class ZZ(dict):
+            the_alias = annotation_alias('the.key',
+                                         delete=False,
+                                         default=1)
+
+            def __init__(self):
+                self.context = X()
+
+        z = ZZ()
+        z['the.key'] = 42
+        assert_that(z, has_property('the_alias', 42))
+        with self.assertRaises(AttributeError):
+            del z.the_alias
+        assert_that(z, has_property('the_alias', 42))
 
     def test_lazy_on_class(self):
 
