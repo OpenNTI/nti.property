@@ -3,10 +3,13 @@
 =========
 
 
-1.2.1 (unreleased)
+2.0.0 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Add support for Python 3.12.
+- Drop runtime dependency on setuptools in favor of "native namespace
+  packages".
+- Drop support for legacy Python versions: 2.7, 3.6. 3.7, 3.8 and 3.9.
 
 
 1.2.0 (2023-05-05)

@@ -134,5 +134,5 @@ def encode(raw_bytes,
     charset = ";charset=" + charset if charset else ""
     encoded = _encode(raw_bytes)
     if isinstance(encoded, bytes):
-        encoded = encoded.decode("utf-8")
+        encoded = encoded.decode("utf-8") # pylint:disable=redefined-variable-type
     return ''.join(("data:", mime_type, charset, codec, encoded))

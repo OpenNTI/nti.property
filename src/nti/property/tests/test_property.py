@@ -182,7 +182,7 @@ class TestProperty(unittest.TestCase):
             def __init__(self):
                 self.context = X()
 
-        z = ZZ()
+        z = ZZ() # pylint:disable=redefined-variable-type
         z['the.key'] = 42
         assert_that(z, has_property('the_alias', 42))
         with self.assertRaises(AttributeError):

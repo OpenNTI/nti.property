@@ -1,5 +1,6 @@
 import codecs
-from setuptools import setup, find_packages
+from setuptools import setup
+from setuptools import find_namespace_packages
 
 entry_points = {
     'console_scripts': [
@@ -31,26 +32,21 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     zip_safe=True,
-    packages=find_packages('src'),
+    packages=find_namespace_packages(where='src'),
     package_dir={'': 'src'},
     include_package_data=True,
     namespace_packages=['nti'],
+    python_requires='>=3.10',
     tests_require=TESTS_REQUIRE,
     install_requires=[
-        'setuptools',
         'zope.annotation',
         'zope.cachedescriptors >= 4.2',
         'zope.contenttype',

@@ -30,7 +30,7 @@ class DataURI(schema.URI):
         return value and value.startswith(cls.DATA)
 
     def _validate(self, value):
-        super(DataURI, self)._validate(value)
+        super()._validate(value)
         if not self.is_valid_data_uri(value):
             raise InvalidURI(value).with_field_and_value(self, value)
 
@@ -38,5 +38,5 @@ class DataURI(schema.URI):
         if isinstance(value, dataurl.DataURL):
             return value
 
-        super(DataURI, self).fromUnicode(value)
+        super().fromUnicode(value)
         return dataurl.DataURL(value)
