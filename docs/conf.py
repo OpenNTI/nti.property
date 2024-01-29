@@ -78,16 +78,15 @@ html_static_path = ['_static']
 html_css_files = [
     'custom.css',
 ]
-if sys.version_info[0] >= 3:
-    html_theme = 'furo'
-    html_theme_options = {
-        'light_css_variables': {
-            'font-stack': '"SF Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
-            'font-stack--monospace': '"JetBrainsMono", "JetBrains Mono", "JetBrains Mono Regular", "JetBrainsMono-Regular", ui-monospace, profont, monospace',
-        },
-    }
-else:
-    html_theme = 'sphinx_rtd_theme'
+
+html_theme = 'furo'
+html_theme_options = {
+    'light_css_variables': {
+        'font-stack': '"SF Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
+        'font-stack--monospace': '"JetBrainsMono", "JetBrains Mono", "JetBrains Mono Regular", "JetBrainsMono-Regular", ui-monospace, profont, monospace',
+    },
+}
+
 
 ## sphinx.ext.todo
 # Display .. todo:: in the output.
@@ -104,6 +103,9 @@ intersphinx_mapping = {
     'zodb': ('http://zodb.readthedocs.io/en/latest/', None,),
     'interface': ('http://zopeinterface.readthedocs.io/en/latest/', None,),
     'component': ('http://zopecomponent.readthedocs.io/en/latest/', None,),
+    'annotation': ('http://zopeannotation.readthedocs.io/en/latest/', None,),
+    'location': ('http://zopelocation.readthedocs.io/en/latest/', None,),
+    'zconfig': ('http://zconfig.readthedocs.io/en/latest/', None,),
 }
 
 # Sphinx 1.8+ prefers this to `autodoc_default_flags`. It's documented that

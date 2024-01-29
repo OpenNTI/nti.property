@@ -10,6 +10,8 @@
 - Drop runtime dependency on setuptools in favor of "native namespace
   packages".
 - Drop support for legacy Python versions: 2.7, 3.6. 3.7, 3.8 and 3.9.
+- Add new module ``nti.property.tunables`` for customizing parameters
+  (usually represented as class variables) from the environment.
 
 
 1.2.0 (2023-05-05)
