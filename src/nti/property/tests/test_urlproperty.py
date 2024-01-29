@@ -88,7 +88,7 @@ class TestURLProperty(unittest.TestCase):
 
             @property
             def data(self):
-                raise AttributeError('data')
+                raise AttributeError('data') # pragma: no cover
 
             _file = _url = data
 

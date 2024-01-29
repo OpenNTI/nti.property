@@ -35,7 +35,7 @@ class TestSchema(unittest.TestCase):
         assert_that(data_url, is_(GIF_DATAURL))
         assert_that(field.fromUnicode(data_url), is_(same_instance(data_url)))
 
-        bad_data = u'data2:notvalid'
+        bad_data = 'data2:notvalid'
         with self.assertRaises(InvalidURI) as exc:
             field.fromUnicode(bad_data)
 

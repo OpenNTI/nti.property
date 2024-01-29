@@ -1,18 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id$
+Support for URLs.
 """
+import logging
 
-from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
 
-logger = __import__('logging').getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 from zope.contenttype.parse import parse as ct_parse
 
@@ -34,8 +31,8 @@ def _dict_getattr(instance, name, default=_dict_setattr):
     if default is _dict_setattr:
         try:
             return instance.__dict__[name]
-        except KeyError:  # pragma: no cover
-            raise AttributeError(name)
+        except KeyError as ex:  # pragma: no cover
+            raise AttributeError(name) from ex
     return instance.__dict__.get(name, default)
 
 
