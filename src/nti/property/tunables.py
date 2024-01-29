@@ -85,7 +85,7 @@ from ZConfig.datatypes import integer
 from ZConfig.datatypes import RangeCheckedConversion
 from ZConfig.datatypes import stock_datatypes
 
-_logger = logging.getLogger(__name__)
+_logger = default_logger = logging.getLogger(__name__)
 
 positive_integer = RangeCheckedConversion(integer, min=1)
 positive_float = RangeCheckedConversion(float, min=1)
@@ -456,8 +456,9 @@ class Tunable:
 
     You can supply a logger, or one will be found for you:
 
+    >>> from nti.property.tunables import default_logger
     >>> logger = None
-    >>> Tunable(0, 'RS_TEST_VAL').logger is _logger
+    >>> Tunable(0, 'RS_TEST_VAL').logger is default_logger
     True
     >>> logger = 1
     >>> Tunable(0, 'RS_TEST_VAL').logger == 1
