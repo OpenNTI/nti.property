@@ -38,3 +38,12 @@ nti.property.urlproperty
     :members:
     :undoc-members:
     :show-inheritance:
+
+nti.property.tunables
+=====================
+
+
+.. automodule:: nti.property.tunables
+    :members:
+    :undoc-members:
+    :show-inheritance:

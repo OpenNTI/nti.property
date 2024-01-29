@@ -49,18 +49,18 @@ setup(
     install_requires=[
         'zope.annotation',
         'zope.cachedescriptors >= 4.2',
+        'zope.component',
         'zope.contenttype',
         'zope.file >= 1.0',
         'zope.schema >= 4.7.0',
+        'ZConfig',
     ],
     extras_require={
         'test': TESTS_REQUIRE,
         'docs': [
             'Sphinx',
             'repoze.sphinx.autointerface',
-            'furo; python_version >= "3.6"',
-            'sphinx_rtd_theme; python_version < "3.6"',
-
+            'furo',
         ],
     },
     entry_points=entry_points,
