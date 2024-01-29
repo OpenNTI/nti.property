@@ -67,7 +67,7 @@ in both places.
     from zope.testing import cleanup
     cleanup.cleanUp()
 
-.. versionadded:: NEXT
+.. versionadded:: 2.0.0
 
 """
 import os
