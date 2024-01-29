@@ -22,6 +22,18 @@ For example:
    >>> T().PROP
    42
 
+If you don't supply an environment variable name, one is derived from
+the name of the class (including module) and property.
+
+.. doctest::
+
+   >>> __name__ = 'nti.property.tunables'
+   >>> class ACls:
+   ...     PROP = Tunable(42)
+   >>> ACls.PROP.env_name
+   'NTI_PROPERTY_TUNABLES_ACLS_PROP'
+
+
 The way in which environment variables are converted to Python objects is customizable.
 The best way to do this is to use named implementations of :class:`IEnvironGetter`.
 A ZCML directive provided by this package will register these with the component
@@ -49,6 +61,11 @@ system; this is automatically done when including this package.
 There is :obj:`a registry <ENVIRON_GETTERS>` of fallback names that is used
 if the component system is not initialized. The same names are registered
 in both places.
+
+.. testcleanup::
+
+    from zope.testing import cleanup
+    cleanup.cleanUp()
 
 .. versionadded:: NEXT
 
@@ -132,6 +149,8 @@ class _EnvironGetterRegistry(dict):
     def __repr__(self):
         return "<EnvironGetters %s>" % (list(self),)
 
+    __str__ = __repr__
+
 #: The mapping from string names to getter functions used
 #: when there are no components registered.
 ENVIRON_GETTERS = _EnvironGetterRegistry()
@@ -148,7 +167,7 @@ def _getter(name):
 
 try:
     from zope.testing import cleanup
-except ImportError:
+except ImportError: # pragma: no cover
     pass
 else:
     cleanup.addCleanUp(ENVIRON_GETTERS.reset)
@@ -436,6 +455,7 @@ class Tunable:
     ('192.168.1.1', 80)
 
     You can supply a logger, or one will be found for you:
+
     >>> logger = None
     >>> Tunable(0, 'RS_TEST_VAL').logger is _logger
     True
