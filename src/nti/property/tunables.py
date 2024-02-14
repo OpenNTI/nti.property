@@ -60,7 +60,70 @@ system; this is automatically done when including this package.
 
 There is :obj:`a registry <ENVIRON_GETTERS>` of fallback names that is used
 if the component system is not initialized. The same names are registered
-in both places.
+in both places. Known getters are:
+
+basic-key
+     :class:`ZConfig.datatypes.BasicKeyConversion`
+boolean
+     :func:`get_boolean_from_environ`
+byte-size
+     :func:`get_byte_size_from_environ`
+dotted-name
+     :class:`ZConfig.datatypes.DottedNameConversion`
+dotted-suffix
+     :class:`ZConfig.datatypes.DottedNameSuffixConversion`
+duration
+     :func:`get_duration_from_environ`
+existing-directory
+     :func:`ZConfig.datatypes.existing_directory`
+existing-dirpath
+     :func:`ZConfig.datatypes.existing_dirpath`
+existing-file
+     :func:`ZConfig.datatypes.existing_file`
+existing-path
+     :func:`ZConfig.datatypes.existing_path`
+float
+     :func:`ZConfig.datatypes.float_conversion`
+float+
+     :func:`get_positive_float_from_environ`
+float0
+     :func:`get_non_negative_float_from_environ`
+identifier
+     :class:`ZConfig.datatypes.IdentifierConversion`
+inet-address
+     :class:`ZConfig.datatypes.InetAddress`
+inet-binding-address
+     :class:`ZConfig.datatypes.InetAddress`
+inet-connection-address
+     :class:`ZConfig.datatypes.InetAddress`
+integer
+     :func:`ZConfig.datatypes.integer`
+integer+
+     :func:`get_positive_integer_from_environ`
+integer0
+     :func:`get_non_negative_integer_from_environ`
+ipaddr-or-hostname
+     :class:`ZConfig.datatypes.IpaddrOrHostname`
+locale
+     :class:`ZConfig.datatypes.MemoizedConversion`
+null
+     :func:`ZConfig.datatypes.null_conversion`
+port-number
+     :meth:`ZConfig.datatypes.RangeCheckedConversion.__call__`
+socket-address
+     :class:`builtins.type`
+socket-binding-address
+     :class:`builtins.type`
+socket-connection-address
+     :class:`builtins.type`
+string
+     :func:`get_string_from_environ`
+string-list
+     :func:`ZConfig.datatypes.string_list`
+time-interval
+     :class:`ZConfig.datatypes.SuffixMultiplier`
+timedelta
+     :func:`ZConfig.datatypes.timedelta`
 
 .. testcleanup::
 
@@ -94,7 +157,7 @@ non_negative_float = RangeCheckedConversion(float, min=0)
 non_negative_integer = RangeCheckedConversion(integer, min=0)
 
 
-def _setting_from_environ(converter, environ_name, default, logger):
+def _setting_from_environ(converter, environ_name, default, logger, target):
     logger = logger or _logger
     result = default
     env_val = os.environ.get(environ_name, default) if environ_name else default
@@ -107,8 +170,8 @@ def _setting_from_environ(converter, environ_name, default, logger):
             result = default
 
     logger.info(
-        'Using value %s from environ %r=%r (default=%r)',
-        result, environ_name, env_val, default)
+        'Using value %s from environ %r; $%s=%r; default=%r; target=%s',
+        result, environ_name, environ_name, env_val, default, target)
     return result
 
 
@@ -117,7 +180,7 @@ class IEnvironGetter(Interface): # pylint:disable=inherit-non-class
     A getter function for use with :class:`Tunable`.
     """
     # pylint:disable=no-self-argument
-    def __call__(environ_name, default, logger=None):
+    def __call__(environ_name, default, logger=None, target=None):
         """
         Read and return an appropriately converted Python
         object from an environment variable named *environ_name*.
@@ -127,6 +190,9 @@ class IEnvironGetter(Interface): # pylint:disable=inherit-non-class
 
         Information will be logged using the :class:`logging.Logger` *logger*.
         If not provided, a default logger will be used.
+
+        The *target* is an optional string giving context information
+        about how the value is used. It is only for logging.
         """
 
 class _EnvironGetterRegistry(dict):
@@ -142,7 +208,7 @@ class _EnvironGetterRegistry(dict):
     def close(self):
         self.__closed = True
 
-    def reset(self):
+    def reset(self): # pragma: no cover
         self.clear()
         self.update(self.__orig)
 
@@ -174,7 +240,7 @@ else:
 
 
 @_getter('string')
-def get_string_from_environ(environ_name, default, logger=None):
+def get_string_from_environ(environ_name, default, logger=None, target=None):
     """
     A getter function that returns the environment value unchanged.
     In particular, this does no string stripping on trimming, so whitespace
@@ -189,11 +255,11 @@ def get_string_from_environ(environ_name, default, logger=None):
     >>> get_string_from_environ('RS_TEST_VAL', None)
     ' <a string> '
     """
-    return _setting_from_environ(lambda k: k, environ_name, default, logger)
+    return _setting_from_environ(lambda k: k, environ_name, default, logger, target)
 
 
 @_getter('integer+')
-def get_positive_integer_from_environ(environ_name, default, logger=None):
+def get_positive_integer_from_environ(environ_name, default, logger=None, target=None):
     """
     A getter function that returns a positive integer from the environment
     (positive integers are those greater than or equal to 1).
@@ -220,10 +286,10 @@ def get_positive_integer_from_environ(environ_name, default, logger=None):
     >>> fut('RS_TEST_VAL', 42)
     42
     """
-    return _setting_from_environ(positive_integer, environ_name, default, logger)
+    return _setting_from_environ(positive_integer, environ_name, default, logger, target)
 
 @_getter('float+')
-def get_positive_float_from_environ(environ_name, default, logger=None):
+def get_positive_float_from_environ(environ_name, default, logger=None, target=None):
     """
     A getter function that returns a positive decimal from the environment
     (positive decimals are those greater than or equal to 1).
@@ -250,11 +316,11 @@ def get_positive_float_from_environ(environ_name, default, logger=None):
     >>> fut('RS_TEST_VAL', 42)
     42
     """
-    return _setting_from_environ(positive_float, environ_name, default, logger)
+    return _setting_from_environ(positive_float, environ_name, default, logger, target)
 
 
 @_getter('integer0')
-def get_non_negative_integer_from_environ(environ_name, default, logger=None):
+def get_non_negative_integer_from_environ(environ_name, default, logger=None, target=None):
     """
     A getter function that returns a non-negative integer from the environment
     (non-negative integers are those greater than or equal to 0).
@@ -281,11 +347,11 @@ def get_non_negative_integer_from_environ(environ_name, default, logger=None):
     >>> fut('RS_TEST_VAL', 42)
     42
     """
-    return _setting_from_environ(non_negative_integer, environ_name, default, logger)
+    return _setting_from_environ(non_negative_integer, environ_name, default, logger, target)
 
 
 @_getter('float0')
-def get_non_negative_float_from_environ(environ_name, default, logger=None):
+def get_non_negative_float_from_environ(environ_name, default, logger=None, target=None):
     """
     >>> import os
     >>> from nti.property.tunables import get_non_negative_float_from_environ
@@ -296,7 +362,7 @@ def get_non_negative_float_from_environ(environ_name, default, logger=None):
     >>> get_non_negative_float_from_environ('RS_TEST_VAL', 1.0)
     1.0
     """
-    return _setting_from_environ(non_negative_float, environ_name, default, logger)
+    return _setting_from_environ(non_negative_float, environ_name, default, logger, target)
 
 
 def parse_boolean(val):
@@ -325,7 +391,7 @@ def parse_boolean(val):
 
 
 @_getter('boolean')
-def get_boolean_from_environ(environ_name, default, logger=None):
+def get_boolean_from_environ(environ_name, default, logger=None, target=None):
     """
     >>> from nti.property.tunables import get_boolean_from_environ
     >>> import os
@@ -337,11 +403,11 @@ def get_boolean_from_environ(environ_name, default, logger=None):
     .. seealso:: `parse_boolean`
        For accepted values.
     """
-    return _setting_from_environ(parse_boolean, environ_name, default, logger)
+    return _setting_from_environ(parse_boolean, environ_name, default, logger, target)
 
 
 @_getter('duration')
-def get_duration_from_environ(environ_name, default, logger=None):
+def get_duration_from_environ(environ_name, default, logger=None, target=None):
     """
     Return a floating-point number of seconds from the environment *environ_name*,
     or *default*.
@@ -375,11 +441,11 @@ def get_duration_from_environ(environ_name, default, logger=None):
             return delta.total_seconds()
         return float(val)
 
-    return _setting_from_environ(convert, environ_name, default, logger)
+    return _setting_from_environ(convert, environ_name, default, logger, target)
 
 
 @_getter('byte-size')
-def get_byte_size_from_environ(environ_name, default, logger=None):
+def get_byte_size_from_environ(environ_name, default, logger=None, target=None):
     """
     Return a byte quantity from the environment variable *environ_name*,
     or *default*.
@@ -398,7 +464,8 @@ def get_byte_size_from_environ(environ_name, default, logger=None):
     >>> get_byte_size_from_environ('RS_TEST_VAL', None)
     1024
     """
-    return _setting_from_environ(stock_datatypes['byte-size'], environ_name, default, logger)
+    return _setting_from_environ(stock_datatypes['byte-size'], environ_name,
+                                 default, logger, target)
 
 
 class Tunable:
@@ -469,6 +536,7 @@ class Tunable:
     """
 
     _NOT_SET = object()
+    _target_name = ''
 
     def __init__(self, default, env_name=None,
                  getter=get_positive_integer_from_environ,
@@ -507,6 +575,7 @@ class Tunable:
         self._value = self._NOT_SET
 
     def __set_name__(self, cls, name):
+        self._target_name = cls.__name__ + '.' + name
         if self.env_name is not None: # pragma: no cover
             return
         self.env_name = ('%s_%s_%s' % (
@@ -536,7 +605,8 @@ class Tunable:
         of an instance.
         """
         if self._value is self._NOT_SET:
-            self._value = self.getter(self.env_name, self.default, self.logger)
+            self._value = self.getter(self.env_name, self.default,
+                                      self.logger, self._target_name)
 
         return self._value
 
@@ -548,8 +618,8 @@ def _register():
             self.__name__ = name
             self.converter = converter
 
-        def __call__(self, environ_name, default, logger):
-            return _setting_from_environ(self.converter, environ_name, default, logger)
+        def __call__(self, environ_name, default, logger, target=None):
+            return _setting_from_environ(self.converter, environ_name, default, logger, target)
 
         def __repr__(self):
             return '<EnvironGetter %r=%s>' % (
@@ -587,3 +657,36 @@ def _register_tunables(_context):
             component=v,
             name=k
         )
+
+# This snippet generates the documentation:
+
+
+def _generate_docs(): # pragma: no cover
+    func_type = type(lambda: None)
+    class O:
+        def m(self):
+            "Nothing"
+    meth_type = type(O().m)
+
+    def ref(item):
+        if hasattr(item, 'converter'):
+            item = item.converter
+        if isinstance(item, func_type):
+            if item.__module__ == 'nti.property.tunables':
+                return ':func:`%s`' % (item.__name__,)
+            return ':func:`%s.%s`' % (item.__module__, item.__name__)
+
+        if isinstance(item, meth_type):
+            kind = type(item.__self__)
+            return ':meth:`%s.%s.%s`' % (
+                kind.__module__,
+                kind.__name__,
+                item.__name__
+            )
+        return ':class:`%s.%s`' % (
+            type(item).__module__,
+            type(item).__name__
+        )
+    for k, v in sorted(ENVIRON_GETTERS.items()):
+        print(k)
+        print('    ', ref(v))

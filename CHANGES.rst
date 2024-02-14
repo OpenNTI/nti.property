@@ -6,7 +6,7 @@
 2.0.1 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Updates to documentation and logging for tunables.
 
 
 2.0.0 (2024-01-29)
