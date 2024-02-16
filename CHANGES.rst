@@ -3,7 +3,7 @@
 =========
 
 
-2.0.1 (unreleased)
+2.0.1 (2024-02-16)
 ==================
 
 - Updates to documentation and logging for tunables.
