@@ -6,7 +6,9 @@
 2.0.2 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Make ``Tunable`` search harder (farther up the call chain)
+  to find a logger. This should make finding a logger in a
+  class definition better.
 
 
 2.0.1 (2024-02-16)

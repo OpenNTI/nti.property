@@ -521,18 +521,40 @@ class Tunable:
     >>> tunable.value
     ('192.168.1.1', 80)
 
-    You can supply a logger, or one will be found for you:
+    You can supply a logger, or one will be found for you
+    by looking for a 'logger' in the calling frames:
 
     >>> from nti.property.tunables import default_logger
     >>> logger = None
     >>> Tunable(0, 'RS_TEST_VAL').logger is default_logger
     True
-    >>> logger = 1
-    >>> Tunable(0, 'RS_TEST_VAL').logger == 1
-    True
-    >>> Tunable(0, 'RS_TEST_VAL', logger=42).logger == 42
-    True
+    >>> logger = "from parent frame"
+    >>> Tunable(0, 'RS_TEST_VAL').logger
+    'from parent frame'
+    >>> Tunable(0, 'RS_TEST_VAL', logger=42).logger
+    42
+    >>> class WithTunable:
+    ...   TUNABLE = Tunable(0, 'RS_TEST_VAL')
+    >>> WithTunable.TUNABLE.logger
+    'from parent frame'
 
+    If the closest logger that we find isn't a
+    real logger, but we find one farther away that _is_ a
+    real logger, we'll use that one:
+
+    >>> import logging
+    >>> real_logger = logging.getLogger('real.logger')
+    >>> def make_class():
+    ...    logger = real_logger
+    ...    def do_it():
+    ...        logger = 'not a real logger'
+    ...        class WithTunable:
+    ...           TUNABLE = Tunable(0, 'RS_TEST_VAL')
+    ...        return WithTunable
+    ...    return do_it()
+    >>> WithTunable = make_class()
+    >>> WithTunable.TUNABLE.logger is real_logger
+    True
     """
 
     _NOT_SET = object()
@@ -557,7 +579,13 @@ class Tunable:
            to use as names.
         :param logger: The logger used to record information about the
            value being used. If not given, tries to find the variable named "logger"
-           in the calling frame.
+           in a calling frame that looks-like a logger.
+
+        .. versionchanged:: NEXT
+           Now searches harder up the call chain to find a logger,
+           and accepts the first one that looks-like a logger. If no
+           real logger can be found, then the first 'logger' variable we see
+           is used.
         """
         self.default = default
         self.env_name = env_name
@@ -566,13 +594,28 @@ class Tunable:
             getter = component.queryUtility(IEnvironGetter, name=getter,
                                             default=ENVIRON_GETTERS.get(getter))
         self.getter = getter
-        if not logger:
-            try:
-                logger = sys._getframe(1).f_locals['logger']
-            except (ValueError, KeyError, AttributeError):
-                logger = _logger
-        self.logger = logger or _logger
+        self.logger = logger or self._find_logger() or _logger
         self._value = self._NOT_SET
+
+    @staticmethod
+    def _find_logger():
+        logger = None
+        closest_candidate = None
+        try:
+            frame = sys._getframe(1) # pylint:disable=protected-access
+        except (AttributeError, ValueError): # pragma: no cover
+            # Attribute: Not implemented; Value: wrong depth
+            frame = None
+
+        while frame is not None:
+            candidate = frame.f_locals.get('logger')
+            closest_candidate = closest_candidate or candidate
+            if hasattr(candidate, 'log'):
+                logger = candidate
+                break
+            frame = frame.f_back
+        return logger or closest_candidate
+
 
     def __set_name__(self, cls, name):
         self._target_name = cls.__name__ + '.' + name
