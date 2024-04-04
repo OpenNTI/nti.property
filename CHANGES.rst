@@ -3,7 +3,7 @@
 =========
 
 
-2.0.2 (unreleased)
+2.0.2 (2024-04-04)
 ==================
 
 - Make ``Tunable`` search harder (farther up the call chain)

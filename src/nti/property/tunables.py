@@ -581,7 +581,7 @@ class Tunable:
            value being used. If not given, tries to find the variable named "logger"
            in a calling frame that looks-like a logger.
 
-        .. versionchanged:: NEXT
+        .. versionchanged:: 2.0.2
            Now searches harder up the call chain to find a logger,
            and accepts the first one that looks-like a logger. If no
            real logger can be found, then the first 'logger' variable we see
