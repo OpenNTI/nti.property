@@ -467,6 +467,10 @@ def get_byte_size_from_environ(environ_name, default, logger=None, target=None):
     return _setting_from_environ(stock_datatypes['byte-size'], environ_name,
                                  default, logger, target)
 
+# TODO: Add a getter for reading a JSON object.
+# TODO: Add a public way to reset a Tunable.
+# TODO: Keep a weak reference to all Tunables, and reset them during
+# test cleanup.
 
 class Tunable:
     """
