@@ -33,9 +33,11 @@ setup(
         'Operating System :: OS Independent',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
@@ -43,9 +45,7 @@ setup(
     packages=find_namespace_packages(where='src'),
     package_dir={'': 'src'},
     include_package_data=True,
-    namespace_packages=['nti'],
     python_requires='>=3.10',
-    tests_require=TESTS_REQUIRE,
     install_requires=[
         'zope.annotation',
         'zope.cachedescriptors >= 4.2',
@@ -64,5 +64,4 @@ setup(
         ],
     },
     entry_points=entry_points,
-    test_suite="nti.property.tests",
 )

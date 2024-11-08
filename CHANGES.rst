@@ -3,10 +3,11 @@
 =========
 
 
-2.0.3 (unreleased)
+2.1.0 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Add support for Python 3.13.
+- Use native namespace packages.
 
 
 2.0.2 (2024-04-04)
