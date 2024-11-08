@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-.. $Id$
+Various property-like decorators and descriptors.
 """
 
-from __future__ import print_function, absolute_import, division
 __docformat__ = "restructuredtext en"
-
-logger = __import__('logging').getLogger(__name__)
 
 import operator
 
@@ -18,6 +15,8 @@ def alias(prop_name, doc=None):
     """
     Returns a property that is a read/write alias for another attribute
     of the object.
+
+    Descriptor, use like ``my_prop = alias(\"other_prop\")``
 
     See :func:`dict_alias`.
     """
@@ -34,6 +33,8 @@ def read_alias(prop_name, doc=None):
     Returns a property that is a read-only alias for another attribute
     of the object.
 
+    Descriptor, use like ``my_prop = read_alias(\"other_prop\")``
+
     See :func:`dict_read_alias`.
     """
     if doc is None:
@@ -48,7 +49,8 @@ def dict_alias(key_name, doc=None):
     instance's dictionary.
 
     See :func:`alias` for a more general version; this is a speed or
-    access optimization.
+    access optimization. Be careful using it with `persistent.Persistent`
+    objects (which may not have a populated dict).
     """
     if doc is None:
         doc = 'Alias for :attr:`' + key_name + '`'
@@ -99,7 +101,9 @@ class LazyOnClass(object):
         return val
 
 
-def annotation_alias(annotation_name, annotation_property=None, default=None,
+def annotation_alias(annotation_name,
+                     annotation_property=None,
+                     default=None,
                      delete=False, delete_quiet=True, doc=None):
     """
     Returns a property that is a read/write alias for
@@ -107,17 +111,17 @@ def annotation_alias(annotation_name, annotation_property=None, default=None,
 
     The object itself may be adaptable to an IAnnotations, or a property
     of the object may be what is adaptable to the annotation. The later is intended
-    for use in adapters when the context object is what should be adapted.
+    for use in adapters when the ``context`` object is what should be adapted.
 
     :keyword bool delete: If ``True`` (not the default), then the property can be used
             to delete the annotation.
-    :keyword bool delete_quiet: If ``True`` and `delete` is also True, then the property
+    :keyword bool delete_quiet: If ``True`` and *delete* is also True, then the property
             will ignore key errors when deleting the annotation value.
     :keyword str annotation_property: If set to a string, it is this property
             of the object that will be adapted to IAnnotations. Most often this will
             be ``context`` when used inside an adapter.
     """
-
+    # pylint:disable=too-many-positional-arguments
     if doc is None:
         doc = 'Alias for annotation ' + annotation_name
 

@@ -712,7 +712,7 @@ def _generate_docs(): # pragma: no cover
     func_type = type(lambda: None)
     class O:
         def m(self):
-            "Nothing"
+            """Nothing."""
     meth_type = type(O().m)
 
     def ref(item):
