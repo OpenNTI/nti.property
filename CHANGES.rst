@@ -6,7 +6,9 @@
 2.1.1 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Add support for Python 3.14; this required no code changes, so
+  earlier versions should work on 3.14 as well.
+- Tweak the logging from ``Tunable``.
 
 
 2.1.0.post0 (2024-11-08)

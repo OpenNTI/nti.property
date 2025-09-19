@@ -156,22 +156,26 @@ positive_float = RangeCheckedConversion(float, min=1)
 non_negative_float = RangeCheckedConversion(float, min=0)
 non_negative_integer = RangeCheckedConversion(integer, min=0)
 
-
+# because we use target in the log string through locals()
+# pylint:disable-next=unused-argument
 def _setting_from_environ(converter, environ_name, default, logger, target):
     logger = logger or _logger
     result = default
-    env_val = os.environ.get(environ_name, default) if environ_name else default
-    if env_val is not default:
+    env_val = None
+    if environ_name in os.environ:
+        env_val = os.environ[environ_name]
         try:
             result = converter(env_val)
         except (ValueError, TypeError):
-            logger.exception("Failed to parse environment value %r for key %r",
-                             env_val, environ_name)
-            result = default
+            logger.exception(
+                "Failed to parse environment value %r for key %r; will use default",
+                env_val, environ_name)
 
     logger.info(
-        'Using value %s from environ %r; $%s=%r; default=%r; target=%s',
-        result, environ_name, environ_name, env_val, default, target)
+        'Using value %(result)s from $%(environ_name)s=%(env_val)r; '
+        'default=%(default)r; target=%(target)s',
+        locals())
+
     return result
 
 
