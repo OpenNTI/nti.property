@@ -3,7 +3,7 @@
 =========
 
 
-2.1.1 (unreleased)
+2.2.0 (2025-09-19)
 ==================
 
 - Add support for Python 3.14; this required no code changes, so
