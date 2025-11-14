@@ -52,16 +52,19 @@ setup(
         'zope.cachedescriptors >= 4.2',
         'zope.component',
         'zope.contenttype',
-        'zope.file >= 1.0',
         'zope.schema >= 4.7.0',
         'ZConfig',
     ],
     extras_require={
+        'zodb': [
+            'zope.file >= 1.0',
+        ],
         'test': TESTS_REQUIRE,
         'docs': [
             'Sphinx',
             'repoze.sphinx.autointerface',
             'furo',
+            'zope.file',
         ],
     },
     entry_points=entry_points,

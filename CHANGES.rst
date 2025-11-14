@@ -6,7 +6,7 @@
 2.2.1 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Move ``zope.file``, and by extension ZODB, into the "zodb" extra.
 
 
 2.2.0 (2025-09-19)

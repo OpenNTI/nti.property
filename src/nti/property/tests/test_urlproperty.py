@@ -18,8 +18,10 @@ from hamcrest import is_in
 from zope.schema.interfaces import InvalidURI
 from zope.schema.interfaces import ConstraintNotSatisfied
 
-
-from nti.property.urlproperty import UrlProperty
+try:
+    from nti.property.urlproperty import UrlProperty
+except ModuleNotFoundError:
+    UrlProperty = None
 
 
 GIF_DATAURL = (
@@ -30,6 +32,11 @@ GIF_DATAURL = (
 # pylint:disable=unnecessary-dunder-call
 
 class TestURLProperty(unittest.TestCase):
+
+    def setUp(self):
+        super().setUp()
+        if UrlProperty is None:
+            self.skipTest('zope.file not installed')
 
     def test_getitem(self):
         prop = UrlProperty()
