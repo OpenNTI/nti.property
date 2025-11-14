@@ -20,7 +20,7 @@ from zope.schema.interfaces import ConstraintNotSatisfied
 
 try:
     from nti.property.urlproperty import UrlProperty
-except ModuleNotFoundError:
+except ModuleNotFoundError: # pragma: no cover
     UrlProperty = None
 
 
@@ -35,7 +35,7 @@ class TestURLProperty(unittest.TestCase):
 
     def setUp(self):
         super().setUp()
-        if UrlProperty is None:
+        if UrlProperty is None: # pragma: no cover
             self.skipTest('zope.file not installed')
 
     def test_getitem(self):
