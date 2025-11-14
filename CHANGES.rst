@@ -3,7 +3,7 @@
 =========
 
 
-2.2.1 (unreleased)
+2.2.1 (2025-11-14)
 ==================
 
 - Move ``zope.file``, and by extension ZODB, into the "zodb" extra.
