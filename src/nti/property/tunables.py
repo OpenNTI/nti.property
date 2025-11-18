@@ -139,7 +139,6 @@ import logging
 
 from zope import component
 from zope.component import named
-from zope.component.zcml import utility as registerUtility
 from zope.interface import Interface
 from zope.interface import provider
 
@@ -700,7 +699,9 @@ class _IRegisterTunables(Interface): # pylint:disable=inherit-non-class
 
 
 def _register_tunables(_context):
-
+    # This is our ZCML handler, so if we're here, we're being called from
+    # zope.configuration; zope.component.zcml requires zope.configuration
+    from zope.component.zcml import utility as registerUtility
     for k, v in ENVIRON_GETTERS.items():
         registerUtility(
             _context,

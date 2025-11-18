@@ -6,7 +6,9 @@
 2.2.2 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Make ``zope.configuration`` an optional dependency. Previously, it
+  was installed by default via way of ``zope.file``, which itself is
+  now optional.
 
 
 2.2.1 (2025-11-14)
