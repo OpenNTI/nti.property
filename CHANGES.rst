@@ -3,7 +3,7 @@
 =========
 
 
-2.2.2 (unreleased)
+2.2.2 (2025-11-18)
 ==================
 
 - Make ``zope.configuration`` an optional dependency. Previously, it
